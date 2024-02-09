@@ -3,71 +3,18 @@
 <html>
 <head>
     <title>User Information</title>
-  <script>
-      
-
-        function displayFileContents() {
-          var fileInput = document.getElementById('file');
-          if (fileInput.files.length > 0) {
-              var file = fileInput.files[0];
-              var reader = new FileReader();
-              var result={}
-              reader.onload = function (e) {
-                  var p= e.target.result
-                  var wordsArray = p.split(/[\s,.:;!?]+/);
-                wordsArray = wordsArray.filter(word => word.trim() !== '');
-                  var p1=""
-                  for(var i=0; i<wordsArray.length; i++)
-                      {
-                        var ch=wordsArray[i]
-                        if(!result[ch]){ 
-                          result[ch] =1; 
-                          p1=p1+" "+ch
-                        } 
-                        else{ 
-                          result[ch]+=1 
-                        } 
-                        
-                      }
-                    p11=p1.split(" ")
-                    var p2 = ""
-                    let sum=0;
-                    for(var i = 1;i< p11.length-1;i++){
-                      var ch = p11[i] 
-                      p2 = p2 + ch + ":" + result[ch] + ", " 
-                      sum = sum + result[ch]
-                    }
-                    var ch=p11[p11.length-1]
-                    p2 = p2 + ch + ":" + result[ch] + "" 
-                    sum=sum+1
-                    alert(p2 + "\n" +"The total number of words in the file are: " + sum)
-                                     
-              };
-
-              reader.readAsText(file);
-          } else {
-              // No file selected
-              alert("No file selected");
-          }
-      }
-  </script>
 </head>
 <body>
     <h1>User Information</h1>
     <p>First Name: {{ user_info.first_name }}</p>
     <p>Last Name: {{ user_info.last_name }}</p>
     <p>Email: {{ user_info.email }}</p>
-
-  <h2>Extra Credit</h2>
-  <form action="/" method="post" enctype="multipart/form-data">
-      <label for="file">Choose a file:</label>
-      <input type="file" id="file" name="file" required>
-      <button type="button" onclick="displayFileContents()">Upload</button>
-  </form>
-  {% if message %}
-      <p>{{ message }}</p>
-  {% endif %}
-  
+    <p>No of words in file: {{ user_info.file_length }}</p>
+  <h1>Download File</h1>
+    <p>Click the button below to download the file:</p>
+    <a href="/download?file_content={{ user_info.file_content }}" download>
+        <button>Download File</button>
+    </a>
     <br><br>
     <a href="/">Logout</a>
 </body>
